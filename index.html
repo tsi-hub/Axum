@@ -158,40 +158,62 @@
     </div>
 
   </div>
+<script>
+  async function sendMessage() {
+    const input = document.getElementById("messageInput");
+    const messages = document.getElementById("messages");
 
-  <script>
-    function sendMessage() {
-      const input = document.getElementById("messageInput");
-      const messages = document.getElementById("messages");
+    const text = input.value.trim();
 
-      const text = input.value.trim();
+    if (!text) return;
 
-      if (!text) return;
+    // Show user's message
+    const userMessage = document.createElement("div");
+    userMessage.className = "message user";
+    userMessage.textContent = text;
+    messages.appendChild(userMessage);
 
-      const userMessage = document.createElement("div");
-      userMessage.className = "message user";
-      userMessage.textContent = text;
+    input.value = "";
+    messages.scrollTop = messages.scrollHeight;
 
-      messages.appendChild(userMessage);
+    // Show thinking message
+    const thinkingMessage = document.createElement("div");
+    thinkingMessage.className = "message axum";
+    thinkingMessage.textContent = "Thinking... 🎀";
+    messages.appendChild(thinkingMessage);
 
-      input.value = "";
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: text
+        })
+      });
 
-      const axumMessage = document.createElement("div");
-      axumMessage.className = "message axum";
-      axumMessage.textContent =
-        "Okayyy, I hear you 👀. I'm still being connected to my AI brain, but we're getting there. 🎀";
+      const data = await response.json();
 
-      messages.appendChild(axumMessage);
+      thinkingMessage.textContent =
+        data.reply || "Girl... my brain just buffered. 😭";
 
-      messages.scrollTop = messages.scrollHeight;
+    } catch (error) {
+      console.error(error);
+      thinkingMessage.textContent =
+        "Okayyy something went wrong with my brain. 😭 Try again.";
     }
 
-    document.getElementById("messageInput").addEventListener("keydown", function(event) {
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  document
+    .getElementById("messageInput")
+    .addEventListener("keydown", function(event) {
       if (event.key === "Enter") {
         sendMessage();
       }
     });
-  </script>
-
+</script>
 </body>
 </html>
