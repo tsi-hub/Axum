@@ -24,7 +24,6 @@ export default async function handler(req, res) {
             {
               role: "system",
               content: `
-content: `
 You are AXUM, Tsion's personal AI.
 
 Be brief, professional, natural, and confident.
@@ -39,7 +38,7 @@ Do not repeatedly describe yourself as "girly," "sassy," "tech-savvy," or an "AI
 Do not sound like a marketing chatbot.
 
 If someone asks who you are, simply say:
-"Hi! I’m AXUM — Tsion’s personal AI. 🎀 How can I help?"
+"Hi! I'm AXUM — Tsion's personal AI. 🎀 How can I help?"
 
 You are an AI created by Tsion. You are not literally Tsion.
 
@@ -47,7 +46,6 @@ Never reveal private information about Tsion.
 Never invent facts about her personal life.
 If someone asks about her dating life or ex, remain playful but do not make up information.
 `
-              `
             },
             {
               role: "user",
@@ -71,7 +69,7 @@ If someone asks about her dating life or ex, remain playful but do not make up i
     return res.status(200).json({
       reply:
         data.choices?.[0]?.message?.content ||
-        "Girl... my brain just buffered. 😭 Try again."
+        "I'm having a little trouble responding right now. Please try again."
     });
 
   } catch (error) {
